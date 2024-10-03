@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  ashudb: 
+    image: mysql:8.0 
+    container_name: ashudbc1 
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: testdb 
+
+  ashuflaskwebapp:
+    image:  ashuflask:webappv1 
+    build: . # location of Dockerfile  . means current location 
+    ports:
+      - "3001:5000" # left side is host port and right side is container port 
+    environment:
+      FLASK_ENV: development
+      MYSQL_HOST: ashudb # db server name 
+      MYSQL_USER: root # db user name 
+      MYSQL_PASSWORD: example # db uesr password 
+      MYSQL_DATABASE: testdb
+    depends_on:
+      - ashudb
